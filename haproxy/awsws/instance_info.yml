@@ -1,8 +1,8 @@
 - hosts: localhost
   
   vars:
-    secret_key_value: "roCghSEMF5CjGaYp4vfkoYHyelGh3fUHB8DE/cq5"
-    access_key_value: "AKIAUR7AZV3ML4BJCSTB"
+    secret_key_value: "blank"
+    access_key_value: "blank"
 
   tasks:
   - name: "Gather EC2 Instance info"

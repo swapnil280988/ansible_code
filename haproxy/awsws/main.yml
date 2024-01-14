@@ -2,14 +2,14 @@
   become: true
 #  module_defaults:
 #    group/aws:
-#      aws_secret_key: "roCghSEMF5CjGaYp4vfkoYHyelGh3fUHB8DE/cq5"
-#      aws_access_key: "AKIAUR7AZV3ML4BJCSTB"
+#      aws_secret_key: ""
+#      aws_access_key: ""
 #      region: "ap-south-1"
 
   vars:
     image_id_value: "ami-04708942c263d8190"
-    secret_key_value: "roCghSEMF5CjGaYp4vfkoYHyelGh3fUHB8DE/cq5"
-    access_key_value: "AKIAUR7AZV3ML4BJCSTB"
+    secret_key_value: ""
+    access_key_value: ""
 
   tasks:
   - name: "Install the package"

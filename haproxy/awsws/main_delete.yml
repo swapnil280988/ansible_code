@@ -2,8 +2,8 @@
   become: true
   module_defaults:
     group/aws:
-      aws_secret_key: "roCghSEMF5CjGaYp4vfkoYHyelGh3fUHB8DE/cq5"
-      aws_access_key: "AKIAUR7AZV3ML4BJCSTB"
+      aws_secret_key: ""
+      aws_access_key: ""
       region: "ap-south-1"
 
   tasks:

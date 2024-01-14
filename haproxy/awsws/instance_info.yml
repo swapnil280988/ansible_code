@@ -1,0 +1,36 @@
+- hosts: localhost
+  
+  vars:
+    secret_key_value: "roCghSEMF5CjGaYp4vfkoYHyelGh3fUHB8DE/cq5"
+    access_key_value: "AKIAUR7AZV3ML4BJCSTB"
+
+  tasks:
+  - name: "Gather EC2 Instance info"
+    amazon.aws.ec2_instance_info:
+      aws_secret_key: "{{ secret_key_value }}"
+      aws_access_key: "{{ access_key_value }}"
+      region: "ap-south-1"
+      filters:
+        "tag:env": "test1"
+    register: ec2_node_info_new
+
+  - name: "Fetch Private IP"
+    debug:
+      var: ec2_node_info_new.instances[0].public_ip_address
+
+  - name: "Store the public IP"
+    set_fact:
+      pub_ip: "{{ ec2_node_info_new.instances[0].public_ip_address }} \t ansible_user=ansitar \t ansible_password=redhat \n"
+
+  - name: "Update Inventory file"
+    copy:
+      content: "{{ pub_ip }}"
+      dest: "/home/ansiblem/dummy"
+
+  - name: " Add public IP to Inventory file"
+    blockinfile:
+      block: "{{ lookup('file', '/home/ansiblem/dummy') }}"
+      path: "/home/ansiblem/ansible/inventory"
+
+
+

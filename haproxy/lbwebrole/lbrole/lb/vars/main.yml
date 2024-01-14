@@ -1,0 +1,6 @@
+---
+# vars file for lb
+#
+packageName: "haproxy"
+packageState: present
+serviceState: restarted

@@ -1,0 +1,15 @@
+- hosts: localhost
+  become: true
+  module_defaults:
+    group/aws:
+      aws_secret_key: "roCghSEMF5CjGaYp4vfkoYHyelGh3fUHB8DE/cq5"
+      aws_access_key: "AKIAUR7AZV3ML4BJCSTB"
+      region: "ap-south-1"
+
+  tasks:
+    - name: "Terminate all running EC2 Instances"
+      amazon.aws.ec2_instance:
+        state: absent
+        filters:
+          instance-state-name: running
+        

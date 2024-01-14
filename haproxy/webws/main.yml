@@ -1,0 +1,23 @@
+- hosts: webnodes 
+  become: true
+  vars:
+    packageName: httpd
+    packageState: absent
+    serviceState: started
+
+  tasks:
+    - name: "Install the package"
+      package:
+        name: "{{ packageName }}"
+        state: "{{ packageState }}"
+
+    - name: " Copy httpd file"
+      copy:
+        content: "This is test web file {{ ansible_facts.hostname }}"
+        dest: "/var/www/html/index.html"
+
+    - name: " Start the service"
+      service:
+        name: "{{ packageName }}"
+        state: "{{ serviceState }}"
+

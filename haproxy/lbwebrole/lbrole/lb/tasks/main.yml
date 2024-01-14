@@ -1,0 +1,13 @@
+---
+# tasks file for lb
+#
+- name: "Install package"
+  package:
+    name: "{{ packageName }}"
+    state: "{{ packageState }}"
+
+- name: "Configure the haproxy file"
+  template:
+    src: "haproxy.conf.j2"
+    dest: "/etc/haproxy/haproxy.cfg"
+  notify: "restart haproxy services"

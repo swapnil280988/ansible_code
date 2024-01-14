@@ -1,0 +1,7 @@
+---
+# vars file for web
+#
+packageName: "httpd"
+packageStatus: present
+serviceStatus: restarted
+

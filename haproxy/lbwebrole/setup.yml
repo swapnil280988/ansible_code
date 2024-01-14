@@ -1,0 +1,9 @@
+- hosts: webnodes
+  become: true
+  roles:
+  -  role: web
+
+- hosts: lbnodes
+  become: true
+  roles:
+  - role: lb

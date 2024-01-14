@@ -1,0 +1,14 @@
+---
+# tasks file for web
+#
+- name: "Install the package"
+  package:
+   name: "{{ packageName }}"
+   state: "{{ packageStatus }}"
+
+- name: " Copy httpd file"
+  copy:
+    content: "This is test web file {{ ansible_facts.hostname }} \n"
+    dest: "/var/www/html/index.html"
+  notify: "restart the service"
+

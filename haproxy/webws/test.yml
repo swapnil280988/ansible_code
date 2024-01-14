@@ -1,0 +1,7 @@
+- hosts: webnodes
+  tasks:
+    - name: "Gather remote info"
+      debug:
+        var: ansible_facts.uptime_seconds
+
+

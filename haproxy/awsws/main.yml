@@ -1,0 +1,78 @@
+- hosts: localhost
+  become: true
+#  module_defaults:
+#    group/aws:
+#      aws_secret_key: "roCghSEMF5CjGaYp4vfkoYHyelGh3fUHB8DE/cq5"
+#      aws_access_key: "AKIAUR7AZV3ML4BJCSTB"
+#      region: "ap-south-1"
+
+  vars:
+    image_id_value: "ami-04708942c263d8190"
+    secret_key_value: "roCghSEMF5CjGaYp4vfkoYHyelGh3fUHB8DE/cq5"
+    access_key_value: "AKIAUR7AZV3ML4BJCSTB"
+
+  tasks:
+  - name: "Install the package"
+    package:
+      name: 
+        - python3.9
+        - python3.9-pip
+      state: present
+
+  - name: " Install python libraries"
+    pip:
+      name: 
+        - boto3
+        - botocore
+      state: present
+
+  - name: "Launch EC2 instance in AWS"
+    amazon.aws.ec2_instance:
+      name: "Web3"
+      count: 1
+      region: "ap-south-1"
+      tags:
+        env: "test3"
+      image_id: "{{ image_id_value }}"
+      instance_type: "t2.micro"
+      key_name: "aws-new"
+      aws_secret_key: "{{ secret_key_value }}"
+      aws_access_key: "{{ access_key_value }}"
+      network:
+        assign_public_ip: true
+      security_group: "CustomSG"
+      state: started
+      user_data: "{{ lookup('file', 'user_data.sh') }}"
+
+  - name: "Pause for 2mins"
+    pause:
+      minutes: 2    
+
+  - name: "Gather EC2 Instance info"
+    amazon.aws.ec2_instance_info:
+      aws_secret_key: "{{ secret_key_value }}"
+      aws_access_key: "{{ access_key_value }}"
+      region: "ap-south-1"
+      filters:
+        "tag:env": "test3"
+    register: ec2_node_info_new
+
+  - name: "Fetch Private IP"
+    debug:
+      var: ec2_node_info_new.instances[0].public_ip_address
+
+  - name: "Store the public IP"
+    set_fact:
+      pub_ip: "{{ ec2_node_info_new.instances[0].public_ip_address }} \t ansible_user=ansitar \t ansible_password=redhat \n"
+
+  - name: "Save file locally"
+    copy:
+      content: "{{ pub_ip }}"
+      dest: "/home/ansiblem/dummy"
+
+  - name: " Add public IP to Inventory file"
+    blockinfile:
+      block: "{{ lookup('file', '/home/ansiblem/dummy') }}"
+      path: "/home/ansiblem/ansible/inventory"
+
+
